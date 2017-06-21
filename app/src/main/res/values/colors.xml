@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffe700</color>
+    <color name="colorPrimaryDark">#ffbf00</color>
+    <color name="colorAccent">#ec5800</color>
+    <color name="activeTab">#FFFFF0</color>
+    <color name="background">#FFFFF0</color>
+</resources>
