@@ -19,9 +19,7 @@ public class CustomWebViewClient extends WebViewClient {
 
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-        //todo show in frame error msg
         Log.d(TAG, "onReceivedError: " + error.toString());
-        //todo are args ok?
         view.loadData("Unable to load page :(", "text", StandardCharsets.UTF_8.toString());
     }
 }

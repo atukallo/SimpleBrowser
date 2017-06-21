@@ -7,6 +7,10 @@ import android.webkit.WebView;
  * Created by Aleksandr Tukallo on 20.06.17.
  */
 
+/**
+ * Class is used to store information about an exact WebView:
+ * number of pages cached in it are stored here
+ */
 class WebViewInfo implements Comparable<WebViewInfo> {
     WebView webView;
     int numberCached;

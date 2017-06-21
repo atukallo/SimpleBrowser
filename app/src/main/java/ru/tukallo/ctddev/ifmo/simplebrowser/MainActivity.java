@@ -1,6 +1,7 @@
 package ru.tukallo.ctddev.ifmo.simplebrowser;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,7 +23,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static String TAG = "MainActivity";
 
-    private static final int POOL_SIZE = 2;
+    private static final int POOL_SIZE = 3;
     private static final int MAX_SUGGESTIONS = 4;
+
+    private static final String KEY_TABS = "tabs";
 
     private LayoutInflater layoutInflater;
 
@@ -235,5 +237,16 @@ public class MainActivity extends AppCompatActivity {
             currentTab = view; //last will be chosen
         }
         frameLayout.setVisibility(VISIBLE);
+
+        if (savedInstanceState != null) {
+            tabManager.restoreFromSavedState(savedInstanceState.getStringArrayList(KEY_TABS));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        ArrayList<String> allTabs = new ArrayList<>(tabManager.getAllTabs());
+        outState.putStringArrayList(KEY_TABS, allTabs);
     }
 }

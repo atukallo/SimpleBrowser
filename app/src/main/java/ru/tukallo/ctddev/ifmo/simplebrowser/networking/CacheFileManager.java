@@ -44,11 +44,6 @@ class CacheFileManager {
         }
     }
 
-    @NonNull
-    public Context getContext() {
-        return context;
-    }
-
     public void put(String key, String data) throws IOException {
         OutputStream cacheOutput = getCacheOutputFor(key);
 
@@ -126,15 +121,6 @@ class CacheFileManager {
         }
 
         return "";
-    }
-
-    public boolean has(final String key) {
-        String hash = md5(key);
-        final String[] files = context.fileList();
-        for (String s : files)
-            if (s.equals(hash))
-                return true;
-        return false;
     }
 
     public interface Listener {

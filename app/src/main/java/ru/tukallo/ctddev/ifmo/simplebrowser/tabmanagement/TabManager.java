@@ -7,12 +7,18 @@ import android.webkit.WebView;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Created by Aleksandr Tukallo on 19.06.17.
  */
 
+/**
+ * This is the main class to monitor and manage WebViews and loaded pages. Consider using
+ * method <code>open</code> to load url or to retrieve it from cache. Caching is done
+ * automatically inside the class
+ */
 public class TabManager {
     private final static String TAG = "TabManager";
 
@@ -20,6 +26,8 @@ public class TabManager {
 
     /**
      * Add WebView to pool, where tabs are shown
+     *
+     * @param webView is a WebView to add
      */
     public void addWebView(WebView webView) {
         webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -27,7 +35,20 @@ public class TabManager {
     }
 
     /**
-     * Close tab and close it from memory and from WebViews
+     * Method should be called, when app is being restored from SavedState. Provided urls are
+     * loaded to WebViews to continue working with them
+     *
+     * @param urls are urls to load
+     * @return random WebView to display is returned
+     */
+    public WebView restoreFromSavedState(List<String> urls) {
+        return activeTabs.restoreFromSavedState(urls);
+    }
+
+    /**
+     * Close tab and delete it from WebViews
+     *
+     * @param url to delete
      */
     public void close(String url) {
         activeTabs.removeCached(url);
@@ -46,7 +67,13 @@ public class TabManager {
         }
     }
 
-    //return view with this page (check if in cached or load from mem) or download
+    /**
+     * Method opens given url if possible in any WebView and returns that WebView.
+     * Url is either downloaded or retrieved from cache.
+     *
+     * @param url is a url to open
+     * @return WebView with given url is returned
+     */
     public WebView open(String url) {
         Log.d(TAG, "open: current stats: \n" + activeTabs.toString());
 
@@ -69,10 +96,20 @@ public class TabManager {
         return toUse;
     }
 
+    /**
+     * Get set with urls, which are currently displayed in WebViews
+     *
+     * @return set with strings
+     */
     public Set<String> getActiveTabs() {
         return activeTabs.getActiveTabs();
     }
 
+    /**
+     * Get set with all the cached urls
+     *
+     * @return set with all the urls
+     */
     public Set<String> getAllTabs() {
         return activeTabs.getAllTabs();
     }
