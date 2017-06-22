@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static String TAG = "MainActivity";
 
-    private static final int POOL_SIZE = 3;
+    private static final int POOL_SIZE = 10;
     private static final int MAX_SUGGESTIONS = 4;
 
     private static final String KEY_TABS = "tabs";
