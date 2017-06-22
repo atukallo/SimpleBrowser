@@ -108,6 +108,13 @@ class ActiveTabs {
     }
 
     /**
+     * Returns true if the page is already displayed in one of the webviews
+     */
+    boolean isActive(String url) {
+        return activePages.get(cachedPages.get(url)).equals(url);
+    }
+
+    /**
      * Method does not increment number of cached pages for given WebView, but it marks
      * url as active
      *

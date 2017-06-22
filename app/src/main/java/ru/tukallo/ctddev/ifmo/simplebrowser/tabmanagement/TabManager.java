@@ -82,8 +82,10 @@ public class TabManager {
         if (activeTabs.isCached(url)) {
             Log.d(TAG, "open: url already opened in " + activeTabs.getWebView(url));
             WebView toUse = activeTabs.getWebView(url);
-            activeTabs.updateActive(url);
-            toUse.loadUrl(url);
+            if (!activeTabs.isActive(url)) {
+                activeTabs.updateActive(url);
+                toUse.loadUrl(url);
+            }
             return toUse;
         }
 
