@@ -25,19 +25,20 @@ public class Networking {
     }
 
     public static Networking getInstance(Context context) {
-        if (instance == null)
+        if (instance == null) {
             instance = new Networking(context);
+        }
         return instance;
     }
 
-    public RequestQueue getRequestQueue() {
-        if (mRequestQueue == null)
+    private RequestQueue getRequestQueue() {
+        if (mRequestQueue == null) {
             mRequestQueue = createRequestQueue(mCtx.getApplicationContext());
+        }
         return mRequestQueue;
     }
 
     private RequestQueue createRequestQueue(final Context context) {
-
         HttpStack stack = new HurlStack();
         Network network = new BasicNetwork(stack);
         RequestQueue queue = new RequestQueue(createCache(context), network);

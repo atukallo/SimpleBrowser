@@ -30,7 +30,7 @@ class CacheFileManager {
             TimeUnit.SECONDS,
             new LinkedBlockingQueue<Runnable>()
     );
-    private final Handler h = new Handler(Looper.getMainLooper());
+    private final Handler handler = new Handler(Looper.getMainLooper());
     @NonNull
     private final Context context;
     @Nullable
@@ -48,11 +48,10 @@ class CacheFileManager {
         OutputStream cacheOutput = getCacheOutputFor(key);
 
         if (cacheOutput != null) {
-            OutputStreamWriter osw =
-                    new OutputStreamWriter(cacheOutput);
-            osw.write(data);
-            osw.flush();
-            osw.close();
+            try (OutputStreamWriter osw = new OutputStreamWriter(cacheOutput)) {
+                osw.write(data);
+                osw.flush();
+            }
         }
     }
 
@@ -66,19 +65,20 @@ class CacheFileManager {
                     final StringBuilder sb = new StringBuilder();
                     char[] buf = new char[1024];
 
-                    while (isr.read(buf) > 0)
+                    while (isr.read(buf) > 0) {
                         sb.append(buf);
+                    }
 
                     isr.close();
 
-                    h.post(new Runnable() {
+                    handler.post(new Runnable() {
                         @Override
                         public void run() {
                             listener.onSuccess(sb.toString());
                         }
                     });
                 } catch (final IOException e) {
-                    h.post(new Runnable() {
+                    handler.post(new Runnable() {
                         @Override
                         public void run() {
                             listener.onError(e);
@@ -113,8 +113,9 @@ class CacheFileManager {
             StringBuilder hexString = new StringBuilder();
             for (byte aMessageDigest : messageDigest) {
                 String h = Integer.toHexString(0xFF & aMessageDigest);
-                while (h.length() < 2)
+                while (h.length() < 2) {
                     h = "0" + h;
+                }
                 hexString.append(h);
             }
             return hexString.toString();
